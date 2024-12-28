@@ -1,5 +1,9 @@
 <template>
   <Header v-bind:user="currentUser"/>
+  <div class="flex-1 flex flex-row gap-2 items-center px-10 py-5 input-div">
+    <UInput v-model="search" class="w-full" @keyup.enter="reload"/>
+    <UButton variant="outline" @click="reload">搜索</UButton>
+  </div>
   <div class="flex flex-col divide-y divide-[#C0BEBF]/20 ">
     <Memo v-bind:memo="m" v-for="m in memos" :key="m.id" :show-full="false"/>
   </div>
@@ -27,7 +31,10 @@ const hasNext = ref(false)
 const state = reactive({
   page: 1,
   size: 10,
+  contentContains: '',
 })
+
+const search = ref('')
 
 const memos = ref<Array<MemoVO>>([])
 onMounted(async () => {
@@ -36,6 +43,7 @@ onMounted(async () => {
 
 const reload = async () => {
   state.page = 1
+  state.contentContains = search.value
   const res = await useMyFetch<{
     list: Array<MemoVO>,
     total: number,

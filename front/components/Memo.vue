@@ -176,6 +176,7 @@ const getMemoMaxHeightStyle = () => {
 const currentCommentBox = useState('currentCommentBox')
 const props = defineProps<{
   memo: MemoVO,
+  showFull: boolean
 }>()
 const extJSON = computed(() => {
   return JSON.parse(props.memo.ext || "{}") as ExtDTO
